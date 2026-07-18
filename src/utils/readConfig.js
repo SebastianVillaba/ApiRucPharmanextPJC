@@ -35,7 +35,7 @@ export const getInformacion = () => {
 
 try {
 
-    const configData = readFile("C:/FacturaElectronica/configFactura.txt");
+    const configData = readFile("C:/FacturaElectronica/configFactura_FarmaceuticaDelEste.txt");
     if (!configData) {
       throw new Error("No se pudo leer el archivo de configuración.");
     }
