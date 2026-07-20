@@ -9,65 +9,68 @@ import { configuracionGlobal } from "../../config/configRoute.js";
 export const getParams = async (id) => {
   // Ejecuta cada consulta y guarda el resultado
   const rucResult = await getDataString(
-    `SELECT rtrim(dRucEm) + '-' + ltrim(dDVEmi) as ruc FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT rtrim(dRucEm) + '-' + ltrim(dDVEmi) as ruc FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
+  const razonSocialResult = await getDataString(
+    `select dNomEmi from tmpFactuDE_D2 where idMov = ${id} and tipo=1`
+  )
   const nombreFantasiaResult = await getDataString(
-    `SELECT dNomFanEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNomFanEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const actividadesEconomicasCodeResult = await getDataString(
-    `SELECT cActEco from tmpFactuDE_D21 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cActEco from tmpFactuDE_D21 WHERE idMov = ${id} and tipo=1`
   );
   const actividadesEconomicasDescripcionResult = await getDataString(
-    `SELECT dDEsACtEco from tmpFactuDE_D21 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDEsACtEco from tmpFactuDE_D21 WHERE idMov = ${id} and tipo=1`
   );
   const timbradoNumeroResult = await getDataString(
-    `SELECT dRucEm FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumTim FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const timbradoFechaResult = await getDataString(
-    `SELECT dFeIniT FROM tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dFeIniT FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const tipoContribuyenteResult = await getDataString(
-    `SELECT iTipCont FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTipCont FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const tipoRegimenResult = await getDataString(
-    `SELECT cTipReg FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cTipReg FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const codigoResult = await getDataString(
-    `SELECT dEst FROM tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dEst FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const direccionResult = await getDataString(
-    `SELECT dDirEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDirEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const numeroCasaResult = await getDataString(
-    `SELECT dNumCas FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumCas FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const departamentoResult = await getDataString(
-    `SELECT cDepEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cDepEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   // Aquí se corrigió el await
   const departamentoDescripcionResult = await getDataString(
-    `SELECT dDesDepEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesDepEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const distritoResult = await getDataString(
-    `SELECT cDisEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cDisEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const distritoDescripcionResult = await getDataString(
-    `SELECT dDesDisEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesDisEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const ciudadResult = await getDataString(
-    `SELECT cCiuEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cCiuEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const ciudadDescripcionResult = await getDataString(
-    `SELECT dDesCiuEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesCiuEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const telefonoResult = await getDataString(
-    `SELECT dTelEmi FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dTelEmi FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const emailResult = await getDataString(
-    `SELECT dEmailE FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dEmailE FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
   const denominacionResult = await getDataString(
-    `SELECT dDenSuc FROM tmpFactuDE_D2 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDenSuc FROM tmpFactuDE_D2 WHERE idMov = ${id} and tipo=1`
   );
 
   const actividadesEconomicas = actividadesEconomicasCodeResult.map(
@@ -84,11 +87,10 @@ export const getParams = async (id) => {
   return {
     version: 150,
     ruc: rucResult[0]?.ruc || null,
-    razonSocial:
-      "DE generado en ambiente de prueba - sin valor comercial ni fiscal",
+    razonSocial: razonSocialResult[0]?.dNomEmi || null,
     nombreFantasia: nombreFantasiaResult[0]?.dNomFanEmi || null,
     actividadesEconomicas,
-    timbradoNumero: timbradoNumeroResult[0]?.dRucEm || null,
+    timbradoNumero: timbradoNumeroResult[0]?.dNumTim || null,
     timbradoFecha: timbradoFechaResult[0]?.dFeIniT || null,
     tipoContribuyente: tipoContribuyenteResult[0]?.iTipCont || null,
     tipoRegimen: tipoRegimenResult[0]?.cTipReg || null,
@@ -115,43 +117,43 @@ export const getParams = async (id) => {
 export const getParamData = async (id) => {
   // Ejecuta cada consulta y guarda el resultado
   const tipoDocumentoData = await getDataString(
-    `SELECT iTiDE FROM tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTiDE FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const establecimientoData = await getDataString(
-    `SELECT dEst from tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dEst from tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const codigoSeguridadAleatorioData = await getDataString(
-    `SELECT dCodSeg from tmpFactuDE_B WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCodSeg from tmpFactuDE_B WHERE idMov = ${id} and tipo=1`
   );
   const puntoData = await getDataString(
-    `SELECT dPunExp FROM tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dPunExp FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const numeroData = await getDataString(
-    `SELECT dNumDoc FROM tmpFactuDE_C WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumDoc FROM tmpFactuDE_C WHERE idMov = ${id} and tipo=1`
   );
   const fechaData = await getDataString(
-    `SELECT dFeEmiDE FROM tmpFactuDE_D WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dFeEmiDE FROM tmpFactuDE_D WHERE idMov = ${id} and tipo=1`
   );
   const tipoEmisionData = await getDataString(
-    `SELECT iTipEmi FROM tmpFactuDE_B WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTipEmi FROM tmpFactuDE_B WHERE idMov = ${id} and tipo=1`
   );
   const tipoTransaccionData = await getDataString(
-    `SELECT iTipTra FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTipTra FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   const tipoImpuestoData = await getDataString(
-    `SELECT iTImp FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTImp FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   const monedaData = await getDataString(
-    `SELECT cMoneOpe FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cMoneOpe FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   const condicionAnticipoData = await getDataString(
-    `SELECT iCondAnt FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iCondAnt FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   const condicionTipoCambioData = await getDataString(
-    `SELECT dCondTiCam FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCondTiCam FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   const cambioData = await getDataString(
-    `SELECT dTiCam FROM tmpFactuDE_D1 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dTiCam FROM tmpFactuDE_D1 WHERE idMov = ${id} and tipo=1`
   );
   // datos del cliente, verificar con true o false
   const contribuyenteData = await getDataBoolean(
@@ -159,156 +161,156 @@ export const getParamData = async (id) => {
               when iNatRec = 1 then 1
               else 0
             end) as resultadoFinal
-     FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+     FROM tmpFactuDE_D3 WHERE   idMov = ${id} and tipo=1`
   )
   const rucData = await getDataString(
-    `SELECT rtrim(dRucRec) + '-' + ltrim(dDVRec) as rucCliente FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT rtrim(dRucRec) + '-' + ltrim(dDVRec) as rucCliente FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const razonSocialData = await getDataString(
-    `SELECT dNomRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNomRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const nombreFantasiaData = await getDataString(
-    `SELECT dNomFanRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNomFanRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const tipoOperacionData = await getDataString(
-    `SELECT iTiOpe FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTiOpe FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const direccionData = await getDataString(
-    `SELECT dDirRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDirRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const numeroCasaData = await getDataString(
-    `SELECT dNumCasRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumCasRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   );
   const departamentoData = await getDataString(
-    `SELECT cDepRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cDepRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const departamentoDescripcionData = await getDataString(
-    `SELECT dDesDepRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesDepRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const distritoData = await getDataString(
-    `SELECT cDisRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cDisRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const distritoDescripcionData = await getDataString(
-    `SELECT dDesDisRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesDisRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const ciudadData = await  getDataString(
-    `SELECT cCiuRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cCiuRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const ciudadDescripcionData = await getDataString(
-    `SELECT dDesCiuRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesCiuRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const paisData = await getDataString(
-    `SELECT cPaisRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cPaisRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const paisDescripcionData = await getDataString(
-    `SELECT dDesPaisRe FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesPaisRe FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const tipoContribuyenteData = await getDataString(
-    `SELECT iTiContRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTiContRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   )
   const documentoTipoData = await getDataString(
-    `SELECT iTipIDRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTipIDRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const documentoNumeroData = await getDataString(
-    `SELECT dNumIDRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumIDRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const telefonoData = await getDataString(
-    `SELECT dTelRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dTelRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const celularData = await getDataString(
-    `SELECT dCelRec FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCelRec FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const emailData = await getDataString(
-    `SELECT rtrim(dEmailRec) FROM  tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT rtrim(dEmailRec) FROM  tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   const codigoData = await getDataString(
-    `SELECT dCodCliente FROM tmpFactuDE_D3 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCodCliente FROM tmpFactuDE_D3 WHERE idMov = ${id} and tipo=1`
   ); 
   // tipo de operacion 
   const presenciaData = await getDataString(
-    `SELECT iIndPres FROM tmpFactuDE_E WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iIndPres FROM tmpFactuDE_E WHERE idMov = ${id} and tipo=1`
   ); 
   const fechaEnvioData = await getDataString(
-    `SELECT dFecEmNR FROM tmpFactuDE_E WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dFecEmNR FROM tmpFactuDE_E WHERE idMov = ${id} and tipo=1`
   ); 
   // condicion y tipo de pago (contado o credito)
   const tipoData = await getDataString(
-    `SELECT iTiPago FROM tmpFactuDE_E71 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTiPago FROM tmpFactuDE_E71 WHERE idMov = ${id} and tipo=1`
   );
   //al contado
   const montoData = await getDataString(
-    `SELECT dMonTiPag FROM tmpFactuDE_E71 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dMonTiPag FROM tmpFactuDE_E71 WHERE idMov = ${id} and tipo=1`
   );
   const nombreMonedaData = await getDataString(
-    `SELECT cMoneTiPag FROM tmpFactuDE_E71 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cMoneTiPag FROM tmpFactuDE_E71 WHERE idMov = ${id} and tipo=1`
   );
   const cambioMonedaData = await getDataString(
-    `SELECT dTiCamTiPag FROM tmpFactuDE_E71 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dTiCamTiPag FROM tmpFactuDE_E71 WHERE idMov = ${id} and tipo=1`
   );
   //por tarjeta
   const nombreTarjetaData = await getDataString(
-    `SELECT dDesDenTarj FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesDenTarj FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   const titularTarjetaData = await getDataString(
-    `SELECT dNomTit FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNomTit FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   const rucTarjetaData = await getDataString(
-    `SELECT dRUCProTar FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dRUCProTar FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   const razonSocialTarjetaData = await getDataString(
-    `SELECT dRSProTar FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dRSProTar FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   const medioPagoTarjetaData = await getDataString(
-    `SELECT iForProPa FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iForProPa FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   const codigoAutorizacionTarjetaData = await getDataString(
-    `SELECT dCodAuOpe FROM tmpFactuDE_E711 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCodAuOpe FROM tmpFactuDE_E711 WHERE idMov = ${id} and tipo=1`
   );
   //cheque
   const nroChequeData = await getDataString(
-    `SELECT dNumCheq FROM tmpFactuDE_E712 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dNumCheq FROM tmpFactuDE_E712 WHERE idMov = ${id} and tipo=1`
   );
   const bancoChequeData = await getDataString(
-    `SELECT dBcoEmi FROM tmpFactuDE_E712 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dBcoEmi FROM tmpFactuDE_E712 WHERE idMov = ${id} and tipo=1`
   );
   //credito
   const tipoCondicionData = await getDataString(
-    `SELECT iCondOpe FROM tmpFactuDE_E7 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iCondOpe FROM tmpFactuDE_E7 WHERE idMov = ${id} and tipo=1`
   )
   // para hacer el switch
   const tipoPagoCreditoData = await getDataString(
-    `SELECT iTiPago FROM tmpFactuDE_E71 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iTiPago FROM tmpFactuDE_E71 WHERE idMov = ${id} and tipo=1`
   )
   const tipoCreditoData = await getDataString(
-    `SELECT iCondCred FROM tmpFactuDE_E72 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iCondCred FROM tmpFactuDE_E72 WHERE idMov = ${id} and tipo=1`
   );
   const plazoCreditoData = await getDataString(
-    `SELECT dPlazoCre FROM tmpFactuDE_E72 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dPlazoCre FROM tmpFactuDE_E72 WHERE idMov = ${id} and tipo=1`
   );
   //detalles - items
   const codigoItemData = await getDataString(
-    `SELECT dCodInt FROM tmpFactuDE_E8 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCodInt FROM tmpFactuDE_E8 WHERE idMov = ${id} and tipo=1`
   );
   const descripcionItemData = await getDataString(
-    `SELECT dDesProSer FROM tmpFactuDE_E8 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dDesProSer FROM tmpFactuDE_E8 WHERE idMov = ${id} and tipo=1`
   );
   const unidadMedidaItemData = await getDataString(
-    `SELECT cUniMed FROM tmpFactuDE_E8 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT cUniMed FROM tmpFactuDE_E8 WHERE idMov = ${id} and tipo=1`
   );
   const cantidadItemData = await getDataString(
-    `SELECT dCantProSer FROM tmpFactuDE_E8 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dCantProSer FROM tmpFactuDE_E8 WHERE idMov = ${id} and tipo=1`
   );
   const precioUnitarioItemData = await getDataString(
-    `SELECT dPUniProSer FROM tmpFactuDE_E81 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dPUniProSer FROM tmpFactuDE_E81 WHERE idMov = ${id} and tipo=1`
   );
   const ivaTipoItemData = await getDataString(
-    `SELECT iAfecIVA FROM tmpFactuDE_E82 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT iAfecIVA FROM tmpFactuDE_E82 WHERE idMov = ${id} and tipo=1`
   );
   const ivaBaseItemData = await getDataString(
-    `SELECT dPropIVA FROM tmpFactuDE_E82 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dPropIVA FROM tmpFactuDE_E82 WHERE idMov = ${id} and tipo=1`
   );
   const ivaItemData = await getDataString(
-    `SELECT dTasaIVA FROM tmpFactuDE_E82 WHERE tipo = 1 and idMov = ${id}`
+    `SELECT dTasaIVA FROM tmpFactuDE_E82 WHERE idMov = ${id} and tipo=1`
   );
 
   const respuesta = await contribuyenteData.resultadoFinal;
@@ -399,51 +401,5 @@ export const getParamData = async (id) => {
           };
       },
     ),
-}}
-
-const generadorDeXML = async (id) => {
-  const parametros = await getParams(id)
-  const data = await  getParamData(id)
-
-  
-  if (parametros && data) {
-    const xml = xmlgen.default.generateXMLDE(parametros, data)
-    console.log(xml)
   }
-}
-
-
-const firmadorDeXML = async (id) => {
-  const parametros = await getParams(id);
-  const data = await getParamData(id);
-
-  if (parametros && data) {
-    console.log("Entre aca");
-    // Esperamos que generateXMLDE resuelva y retorne el XML como cadena
-    const xml = await xmlgen.default.generateXMLDE(parametros, data);
-    // Ahora llamamos a signXML pasando el XML ya resuelto
-    const xmlFirmado = await xmlsign.default.signXML(xml, configuracionGlobal.firma, configuracionGlobal.claveFirma)
-      .catch(err => console.error("Error al firmar XML:", err));
-
-    const QrFinal = await qrgen.default.generateQR(xmlFirmado)//.then(xml => console.log("XML con QR", xml));
-
-    const parser = new xml2js.Parser({
-      explicitArray: false,
-      tagNameProcessors: [xml2js.processors.stripPrefix],
-    });
-
-    parser.parseString(QrFinal, (err, result) => {
-      if (err) {
-        console.error("Error al parsear el XML:", err);
-        return;
-      }
-      // La estructura resultante se ajusta a los nombres de nodos sin prefijo
-      // Accedemos al nodo gCamFuFD y luego a dCarQR
-      const qrString = result.rDE.gCamFuFD.dCarQR;
-      console.log("QR extraído:", qrString);
-      // Aquí ya puedes trabajar con la cadena del QR (qrString)
-    });    
-
-  }
-
 };
