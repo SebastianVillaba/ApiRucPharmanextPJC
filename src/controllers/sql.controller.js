@@ -84,7 +84,7 @@ const getQRFacturaControler = async (req, res) => {
       const xml = await xmlgen.default.generateXMLDE(parametros, data);
       //Aqui se firma el XML
       const xmlFirmado = await xmlsign.default
-        .signXML(xml, "./src/certs/RAMON_MYSKO_BUBEN_VIT_S_A.p12", "PBRI111533")
+        .signXML(xml, configuracionGlobal.firma, configuracionGlobal.claveFirma)
         .catch((err) => console.error("Error al firmar XML:", err));
 
       //Aqui se genera el QR
