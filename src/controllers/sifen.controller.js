@@ -1,12 +1,13 @@
 import setApi from "facturacionelectronicapy-setapi";
 import path from "path";
 import fs from "fs";
-import { configGlobal } from "../utils/configGlobal";
+import { configuracionGlobal } from "../../config/configRoute.js";
 
 const __dirname = path.resolve();
 
 const askRuc = async (req, res) => {
   try {
+
     const { id, ruc } = req.query;
 
     if (!id || !ruc) {
@@ -14,18 +15,17 @@ const askRuc = async (req, res) => {
     }
 
     // Ruta absoluta del certificado
-    const certPath = 'C:/FacturaElectronica/OSCAR IVAN SIMON ALVISO.p12'
+    const certPath = configuracionGlobal.firma;
     if (!fs.existsSync(certPath)) {
       return res.status(500).json({ error: "Certificado no encontrado" });
     }
 
-    const certPassword = configGlobal.claveFirma;
-    const environment = process.env.ENV || "test";
-
+    const certPassword = configuracionGlobal.claveFirma;
+  
     const result = await setApi.default.consultaRUC(
       parseInt(id),
       ruc,
-      environment,
+      'prod',
       certPath,
       certPassword,
       { debug: true, timeout: 90000 } // Configuración adicional
